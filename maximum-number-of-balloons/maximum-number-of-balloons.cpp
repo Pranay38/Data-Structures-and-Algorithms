@@ -1,29 +1,21 @@
 class Solution {
 public:
     int maxNumberOfBalloons(string text) {
-        map<char,int>mp;
-        mp['b']=0;
-        mp['a']=0;
-        mp['l']=0;
-        mp['o']=0;
-        mp['n']=0;
-        for(int i=0;i<text.size();i++){
-            mp[text[i]]++;
+        unordered_map<char,int> mp;
+        for(char c : text) {
+            mp[c]++;
         }
-        vector<int>v;
-        for(auto it:mp){
-            if(it.first=='b')
-            v.push_back(it.second);
-            if(it.first=='a')
-            v.push_back(it.second);
-            if(it.first=='l')
-            v.push_back(it.second/2);
-            if(it.first=='o')
-            v.push_back(it.second/2);
-            if(it.first=='n')
-            v.push_back(it.second);
+        
+        int minCount = INT_MAX;
+        string balloon = "balloon";
+        for(char c : balloon) {
+            int count = mp[c];
+            if(c == 'l' || c == 'o') { // divide count by 2 for 'l' and 'o'
+                count /= 2;
+            }
+            minCount = min(minCount, count);
         }
-        sort(v.begin(),v.end());
-        return v[0];
+        
+        return minCount;
     }
 };
