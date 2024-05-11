@@ -1,39 +1,32 @@
-int dp[101][101];
-int n;
-
-int find(int x, int y, vector<vector<int>>& g)
-{
-    if(x == n)
-        return 0;
-
-    if(dp[x][y] != -100000)
-        return dp[x][y];
-
-    int ans = g[x][y] + find(x+1, y, g);
-
-    if(y-1>=0)
-        ans = min(ans, g[x][y] + find(x+1, y-1, g) );
-
-    if(y+1!=n)
-        ans = min(ans, g[x][y] + find(x+1, y+1, g) );
-    
-    return dp[x][y] = ans;
-}
-
 class Solution {
 public:
-    int minFallingPathSum(vector<vector<int>>& mat) {
-        
-        n = mat.size();
-        int ans = 1e9;
-        
-        for(int i=0; i<101; ++i)
-            for(int j=0; j<101; ++j)
-                dp[i][j] = -100000;
-
-        for(int i=0; i<mat.size(); ++i)
-            ans = min(ans, find(0, i, mat));
-        
-        return ans;
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        int n=matrix.size();
+        vector<vector<int>>dp(n,vector<int>(n,0));
+        for(int j=0;j<n;j++){
+            dp[0][j]=matrix[0][j];
+        }
+        for(int i=1;i<n;i++){
+            for(int j=0;j<n;j++){
+                int up=matrix[i][j]+dp[i-1][j];
+                int ldiag=matrix[i][j];
+                if(j-1>=0)
+                ldiag+=dp[i-1][j-1];
+                else
+                ldiag+=1e9;
+                int rdiag=matrix[i][j];
+                if(j+1<n)
+                rdiag+=dp[i-1][j+1];
+                else
+                rdiag+=1e9;
+                dp[i][j]=min(up,min(ldiag,rdiag));
+            }
+           
+        }
+        int mini=INT_MAX;
+        for(int j=0;j<n;j++){
+            mini=min(mini,dp[n-1][j]);
+        }
+        return mini;
     }
 };
