@@ -1,44 +1,35 @@
 class Solution {
 public:
-    
-    vector<int> largestDivisibleSubset(vector<int> nums) {
-        std::sort(nums.begin(), nums.end());  
-        vector<int> prev(nums.size(),-1);
-        vector<int> size(nums.size(),1);
-        for(int i = 1;i<nums.size();++i){
-            for(int j = i-1;j>=0;--j){
-                if(nums[i]%nums[j]==0 && size[j]+1>size[i]){
-                    size[i] = size[j]+1;
-                    prev[i] = j;
+    vector<int> largestDivisibleSubset(vector<int>& nums) {
+        int n=nums.size();
+        sort(nums.begin(),nums.end());
+        vector<int>dp(n,0);
+        vector<int>hash(n,0);
+        for(int i=0;i<n;i++){
+            hash[i]=i;
+            for(int prev_index=0;prev_index<i;prev_index++){
+                if(nums[i]%nums[prev_index]==0&1+dp[prev_index]>dp[i]){
+                    dp[i]=1+dp[prev_index];
+                    hash[i]=prev_index;
                 }
             }
         }
-        /*for(int i = 0;i<nums.size();++i){
-            cout<<prev[i]<<" ";
-        }
-        cout<<endl;
-        for(int i = 0;i<nums.size();++i){
-            cout<<size[i]<<" ";
-        }
-        cout<<endl;*/
-        int maxIndex = -1;
-        int max = -1;
-        for(int i = 0;i<nums.size(); ++i){
-            if(size[i]>max){
-                max = size[i];
-                maxIndex = i;
+        int ans=-1;
+        int lastind=1;
+        for(int i=0;i<n;i++){
+            if(dp[i]>ans){
+                ans=dp[i];
+                lastind=i;
             }
         }
-        vector<int> res(max);
-
-
-        int index = 0;
-        int cur = maxIndex;
-        while(cur!=-1){
-            res[index++] = nums[cur];
-            cur = prev[cur];
+        vector<int>temp;
+        temp.push_back(nums[lastind]);
+        while(hash[lastind]!=lastind){
+            lastind=hash[lastind];
+            temp.push_back(nums[lastind]);
         }
+        reverse(temp.begin(),temp.end());
+        return temp;
 
-        return res;
     }
 };
