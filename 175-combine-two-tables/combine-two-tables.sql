@@ -1,5 +1,4 @@
 # Write your MySQL query statement below
-# Write your MySQL query statement below
 SELECT 
 p.firstName,
 p.lastName,
