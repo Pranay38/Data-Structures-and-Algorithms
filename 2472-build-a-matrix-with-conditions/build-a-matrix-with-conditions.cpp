@@ -17,8 +17,6 @@ public:
         }
         return matrix;
     }
-
-private:
     vector<int> topoSort(vector<vector<int>>& edges, int n) {
         vector<vector<int>> adj(n + 1);
         vector<int> order;
