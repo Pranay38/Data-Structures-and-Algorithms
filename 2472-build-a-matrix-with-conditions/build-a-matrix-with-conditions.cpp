@@ -1,13 +1,13 @@
 class Solution {
 public:
-    std::vector<std::vector<int>> buildMatrix(int k, std::vector<std::vector<int>>& rowConditions,
-                                              std::vector<std::vector<int>>& colConditions) {
-        std::vector<int> orderRows = topoSort(rowConditions, k);
-        std::vector<int> orderColumns = topoSort(colConditions, k);
+    vector<vector<int>> buildMatrix(int k, vector<vector<int>>& rowConditions,
+        vector<vector<int>>& colConditions) {
+        vector<int> orderRows = topoSort(rowConditions, k);
+        vector<int> orderColumns = topoSort(colConditions, k);
 
         if (orderRows.empty() || orderColumns.empty()) return {};
 
-        std::vector<std::vector<int>> matrix(k, std::vector<int>(k, 0));
+        vector<vector<int>> matrix(k, vector<int>(k, 0));
         for (int i = 0; i < k; i++) {
             for (int j = 0; j < k; j++) {
                 if (orderRows[i] == orderColumns[j]) {
@@ -19,10 +19,10 @@ public:
     }
 
 private:
-    std::vector<int> topoSort(std::vector<std::vector<int>>& edges, int n) {
-        std::vector<std::vector<int>> adj(n + 1);
-        std::vector<int> order;
-        std::vector<int> visited(n + 1, 0);
+    vector<int> topoSort(vector<vector<int>>& edges, int n) {
+        vector<vector<int>> adj(n + 1);
+        vector<int> order;
+        vector<int> visited(n + 1, 0);
         bool hasCycle = false;
 
         for (auto& x : edges) {
@@ -35,12 +35,12 @@ private:
                 if (hasCycle) return {};
             }
         }
-        std::reverse(order.begin(), order.end());
+        reverse(order.begin(), order.end());
         return order;
     }
 
-    void dfs(int node, std::vector<std::vector<int>>& adj, std::vector<int>& visited,
-             std::vector<int>& order, bool& hasCycle) {
+    void dfs(int node, vector<vector<int>>& adj, vector<int>& visited,
+             vector<int>& order, bool& hasCycle) {
         visited[node] = 1;
         for (int neighbor : adj[node]) {
             if (visited[neighbor] == 0) {
